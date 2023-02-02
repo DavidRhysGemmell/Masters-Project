@@ -1,0 +1,103 @@
+<launch>
+
+    <!-- From rosbot_rviz.launch-->
+    <include file="$(find rosbot_bringup)/launch/rosbot.launch">
+    <arg name="gui" value="true"/>
+    <arg name="world" value="$(find rosbot_gazebo)/worlds/turtlebot_playground.world"/>
+    </include>
+
+    <param name="robot_description" command="$(find xacro)/xacro '$(find rosbot_description)/urdf/rosbot.xacro'"/>
+
+    <!-- -->
+  <!-- Choose visualization -->
+  <arg name="rviz" default="true" />
+  <arg name="rtabmapviz" default="false" /> 
+  <arg name="save_objects" default="false"/>
+  <arg name="localization" default="false"/>
+  <arg     if="$(arg localization)" name="rtabmap_args" default=""/>
+  <arg unless="$(arg localization)" name="rtabmap_args" default="--delete_db_on_start"/>
+
+  <param name="use_sim_time" type="bool" value="True"/>
+  
+  <!-- SLAM (robot side) -->
+  <!-- args: "delete_db_on_start" and "udebug" -->
+  <group ns="rtabmap">
+    <node name="rtabmap" pkg="rtabmap_ros" type="rtabmap" output="screen" args="$(arg rtabmap_args)">
+	  <param name="frame_id" type="string" value="base_link"/>
+	
+	  <param name="subscribe_depth" type="bool" value="true"/>
+	  <param name="subscribe_scan" type="bool" value="true"/>
+	
+	  <remap from="odom" to="/odom"/>
+	  <remap from="scan" to="/scan"/>
+	  <remap if="$(arg save_objects)" from="user_data_async" to="/objectsData"/>
+
+	  <remap from="rgb/image"       to="/camera/rgb/image_raw"/>
+  	  <remap from="depth/image"     to="/camera/depth/image_raw"/>
+  	  <remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
+  	  
+  	  <param name="rgb/image_transport"   type="string" value="compressed"/>
+      <param name="depth/image_transport" type="string" value="raw"/>
+	
+	  <param name="queue_size" type="int" value="10"/>
+	  <param name="landmark_linear_variance" type="double" value="0.1"/>
+	  <param name="landmark_angular_variance" type="double" value="0.5"/>
+	
+	  <!-- RTAB-Map's parameters: do "rosrun rtabmap rtabmap (double-dash)params" to see the list of available parameters. -->
+	  <param name="RGBD/NeighborLinkRefining" type="string" value="true"/>  <!-- Do odometry correction with consecutive laser scans -->
+	  <param name="RGBD/ProximityBySpace"     type="string" value="true"/>  <!-- Proximity detection (using estimated position) with locations in WM -->
+	  <param name="Mem/BadSignaturesIgnored"  type="string" value="false"/> <!-- Don't ignore bad images for 3D node creation (e.g. white walls) -->
+	  <param name="Reg/Strategy"              type="string" value="1"/>     <!-- Registration strategy: 0=visual, 1=ICP, 2=visual+ICP -->
+	  <param name="Icp/CorrespondenceRatio"   type="string" value="0.2"/>
+	  <param name="Icp/Iterations"            type="string" value="30"/>
+	  <param name="Icp/VoxelSize"             type="string" value="0.025"/>
+	  <param name="Vis/MinInliers"            type="string" value="10"/>    <!-- 3D visual words minimum inliers to accept loop closure -->
+	  <param name="Vis/MaxDepth"              type="string" value="4.0"/>   <!-- 3D visual words maximum depth 0=infinity -->
+	  <param name="Vis/InlierDistance"        type="string" value="0.1"/>   <!-- 3D visual words correspondence distance -->
+	  <param name="RGBD/AngularUpdate"        type="string" value="0.01"/>  <!-- Update map only if the robot is moving -->
+	  <param name="RGBD/LinearUpdate"         type="string" value="0.01"/>  <!-- Update map only if the robot is moving -->
+	  <param name="Rtabmap/TimeThr"           type="string" value="700"/>
+	  <param name="Mem/RehearsalSimilarity"   type="string" value="0.45"/>
+	  <param name="Mem/NotLinkedNodesKept"    type="string" value="false"/>
+	  <param name="Optimizer/Slam2D"          type="string" value="true"/>
+	  <param name="Reg/Force3DoF"             type="string" value="true"/>   
+	  <param if="$(arg localization)" name="Mem/IncrementalMemory" type="string" value="false"/>
+    </node>
+    
+    <!-- Visualisation RTAB-Map -->
+    <node if="$(arg rtabmapviz)" pkg="rtabmap_ros" type="rtabmapviz" name="rtabmapviz" args="-d $(find rtabmap_ros)/launch/config/rgbd_gui.ini" output="screen">
+  	  <param name="subscribe_depth" type="bool" value="true"/>
+      <param name="subscribe_scan"  type="bool" value="true"/>
+      <param name="frame_id"        type="string" value="base_link"/>
+    
+      <remap from="rgb/image"       to="/camera/rgb/image_raw"/>
+      <remap from="depth/image"     to="/camera/depth/image_raw"/>
+      <remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
+      <remap from="scan"            to="/scan"/>
+      <remap from="odom"            to="/odom"/>
+      
+      <param name="rgb/image_transport"   type="string" value="compressed"/>
+      <param name="depth/image_transport" type="string" value="raw"/>
+    </node>
+    
+  </group> 
+
+  <!-- send AZIMUT 3 urdf to param server -->
+  <!-- 
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find az3_description)/robots/azimut_3_laser.urdf.xacro'" />
+  -->
+  <!-- Visualisation -->
+
+  <node if="$(arg rviz)" pkg="rviz" type="rviz" name="rviz" args="-d $(find initial_pkg)/launch/3d_mapping.rviz" output="screen"/>
+  <node pkg="nodelet" type="nodelet" name="points_xyzrgb" args="standalone rtabmap_ros/point_cloud_xyzrgb">
+    <remap from="rgb/image"       to="/camera/rgb/image_raw"/>
+    <remap from="depth/image"     to="/camera/depth/image_raw"/>
+    <remap from="rgb/camera_info" to="/camera/rgb/camera_info"/>
+    <remap from="cloud"           to="voxel_cloud" />
+    <param name="rgb/image_transport"   type="string" value="compressed"/>
+    <param name="depth/image_transport" type="string" value="raw"/>
+    <param name="queue_size" type="int" value="10"/>
+    <param name="voxel_size" type="double" value="0.01"/>
+  </node>
+
+</launch>
