@@ -1,13 +1,7 @@
 <?xml version="1.0"?>
 <!-- Copied from rtabmap.launch and edited for purpose-->
 <launch>
-<!-- From rosbot_rviz.launch-->
-  <include file="$(find rosbot_bringup)/launch/rosbot.launch">
-  <arg name="gui" value="true"/>
-  <arg name="world" value="$(find rosbot_gazebo)/worlds/turtlebot_playground.world"/>
-  </include>
 
-  <param name="robot_description" command="$(find xacro)/xacro '$(find rosbot_description)/urdf/rosbot.xacro'"/>
 
 <!-- -->
 
@@ -49,7 +43,7 @@
   <arg name="gui_cfg"                 default="~/.ros/rtabmap_gui.ini" />
   <arg name="rviz_cfg"                default="$(find rtabmap_ros)/launch/config/rgbd.rviz" />
 
-  <arg name="frame_id"                default="camera_link"/>     <!-- Fixed frame id, you may set "base_link" or "base_footprint" if they are published -->
+  <arg name="frame_id"                default="base_link"/>     <!-- Fixed frame id, you may set "base_link" or "base_footprint" if they are published -->
   <arg name="odom_frame_id"           default=""/>                <!-- If set, TF is used to get odometry instead of the topic -->
   <arg name="odom_frame_id_init"      default=""/>                <!-- If set, TF map->odom is published even if no odometry topic has been received yet. The frame id should match the one in the topic. -->
   <arg name="map_frame_id"            default="map"/>
@@ -88,7 +82,7 @@
 
   <!-- Already synchronized RGB-D related topic, with rtabmap_ros/rgbd_sync nodelet -->
   <arg name="rgbd_sync"               default="false"/>         <!-- pre-sync rgb_topic, depth_topic, camera_info_topic -->
-  <arg name="approx_rgbd_sync"        default="true"/>          <!-- false=exact synchronization -->
+  <arg name="approx_rgbd_sync"        default="false"/>          <!-- false=exact synchronization -->
   <arg name="subscribe_rgbd"          default="$(arg rgbd_sync)"/>
   <arg name="rgbd_topic"              default="rgbd_image" />
   <arg name="depth_scale"             default="1.0" />         <!-- Deprecated, use rgbd_depth_scale instead -->
