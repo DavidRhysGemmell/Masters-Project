@@ -1,15 +1,6 @@
 <?xml version="1.0"?>
 <!-- Copied from rtabmap.launch and edited for purpose-->
 <launch>
-<!-- From rosbot_rviz.launch-->
-  <include file="$(find rosbot_bringup)/launch/rosbot.launch">
-  <arg name="gui" value="true"/>
-  <arg name="world" value="$(find rosbot_gazebo)/worlds/turtlebot_playground.world"/>
-  </include>
-
-  <param name="robot_description" command="$(find xacro)/xacro '$(find rosbot_description)/urdf/rosbot.xacro'"/>
-
-<!-- -->
 
 
   <!-- Convenience launch file to launch odometry, rtabmap and rtabmapviz nodes at once -->
