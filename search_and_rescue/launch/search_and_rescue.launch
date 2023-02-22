@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <launch>
-        <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:/home/user/simulation_ws/src/search_and_rescue/textures" />
+        <env name="GAZEBO_RESOURCE_PATH" value="${GAZEBO_RESOURCE_PATH}:/home/catkin_ws/src/search_and_rescue/textures" />
         <!-- overwriting these args -->
         <arg name="debug" default="false" />
         <arg name="gui" default="true" />
