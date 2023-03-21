@@ -11,7 +11,7 @@
   
   <!-- Command line arguments -->
   <arg name="use_lidar"
-       default="true"
+       default="false"
        doc="Set to false if lidar should not be used"
        />
   
