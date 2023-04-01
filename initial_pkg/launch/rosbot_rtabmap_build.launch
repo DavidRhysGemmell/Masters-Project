@@ -27,7 +27,7 @@
   <arg name="subscribe_rgb"  default="$(arg depth)"/>
 
   <!-- Choose visualization -->
-  <arg name="rtabmapviz"              default="false" />
+  <arg name="rtabmap_viz"              default="false" />
   <arg name="rviz"                    default="true" />
 
   <!-- Localization-only mode -->
@@ -348,7 +348,7 @@
       <param name="range_min"       type="double" value="$(arg scan_cloud_assembling_range_min)"/>
       <param name="range_max"       type="double" value="$(arg scan_cloud_assembling_range_max)"/>
       <param name="noise_radius"        type="double" value="$(arg scan_cloud_assembling_noise_radius)"/>
-      <param name="noise_min_neighbors" type="int"    value="$(arg scan_cloud_assembling_noise_min_neighbors)"/>
+      <param name="noise_min_neighbors" type="int"    value=bmap_viz"$(arg scan_cloud_assembling_noise_min_neighbors)"/>
       <param name="wait_for_transform_duration" type="double" value="$(arg wait_for_transform)"/>
     </node>
 
