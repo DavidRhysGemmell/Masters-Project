@@ -51,14 +51,14 @@
   <arg name="ground_truth_base_frame_id" default=""/>  <!-- e.g., "tracker", a fake frame matching the frame "frame_id" (but on different TF tree) -->
   <arg name="namespace"               default="rtabmap"/>
   <arg name="database_path"           default="~/.ros/rtabmap.db"/>
-  <arg name="queue_size"              default="10"/>
+  <arg name="queue_size"              default="30"/>
   <arg name="wait_for_transform"      default="0.2"/>
-  <arg name="args"                    default=""/>              <!-- delete_db_on_start, udebug -->
+  <arg name="args"                    default="--delete_db_on_start --Vis/MaxFeatures 500 --Mem/ImagePreDecimation 2 --Mem/ImagePostDecimation 2 --Kp/DetectorStrategy 6 -- OdomF2M/MaxSize 1000 --Odom/ImageDecimation 2"/>              <!-- delete_db_on_start, udebug -->
   <arg name="rtabmap_args"            default="$(arg args)"/>   <!-- deprecated, use "args" argument -->
   <arg name="gdb"                     default="false"/>         <!-- Launch nodes in gdb for debugging (apt install xterm gdb) -->
   <arg     if="$(arg gdb)" name="launch_prefix" default="xterm -e gdb -q -ex run --args"/>
   <arg unless="$(arg gdb)" name="launch_prefix" default=""/>
-  <arg name="clear_params"            default="true"/>
+  <arg name="clear_params"            default="Ftrue"/>
   <arg name="output"                  default="screen"/>        <!-- Control node output (screen or log) -->
   <arg name="publish_tf_map"          default="true"/>
 
@@ -87,7 +87,7 @@
   <arg name="rgbd_topic"              default="rgbd_image" />
   <arg name="depth_scale"             default="1.0" />         <!-- Deprecated, use rgbd_depth_scale instead -->
   <arg name="rgbd_depth_scale"        default="$(arg depth_scale)" />
-  <arg name="rgbd_decimation"         default="1" />
+  <arg name="rgbd_decimation"         default="2" />
 
   <arg name="compressed"              default="false"/>         <!-- If you want to subscribe to compressed image topics -->
   <arg name="rgb_image_transport"     default="compressed"/>    <!-- Common types: compressed, theora (see "rosrun image_transport list_transports") -->
@@ -215,7 +215,7 @@
 
     <group unless="$(arg rgbd_sync)">
        <group if="$(arg subscribe_rgbd)">
-         <node name="republish_rgbd_image"  type="rgbd_relay" pkg="rtabmap_ros" clear_params="$(arg clear_params)">
+         <node name="republish_rgbd_image"  type="rgbd_relay" pkg="rtabmap_util" clear_params="$(arg clear_params)">
            <remap     if="$(arg compressed)" from="rgbd_image" to="$(arg rgbd_topic)/compressed"/>
            <remap     if="$(arg compressed)" from="$(arg rgbd_topic)/compressed_relay" to="$(arg rgbd_topic_relay)"/>
            <remap unless="$(arg compressed)" from="rgbd_image" to="$(arg rgbd_topic)"/>
@@ -336,7 +336,7 @@
       <remap from="$(arg scan_cloud_topic)/deskewed" to="odom_filtered_input_scan"/>
     </node>
 
-    <node if="$(arg scan_cloud_assembling)" pkg="rtabmap_ros" type="point_cloud_assembler" name="point_cloud_assembler" clear_params="$(arg clear_params)" output="$(arg output)">
+    <node if="$(arg scan_cloud_assembling)" pkg="rtabmap_util" type="point_cloud_assembler" name="point_cloud_assembler" clear_params="$(arg clear_params)" output="$(arg output)">
       <remap     if="$(arg scan_cloud_filtered)" from="cloud" to="odom_filtered_input_scan"/>
       <remap unless="$(arg scan_cloud_filtered)" from="cloud" to="$(arg scan_cloud_topic)"/>
 

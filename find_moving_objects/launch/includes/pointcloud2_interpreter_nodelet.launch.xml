@@ -2,12 +2,12 @@
   <arg name="manager"             default="manager"/>
   <arg name="create_manager"      default="false"/>
 
-  <arg name="subscribe_topic"                                    default="pointcloud"/>
+  <arg name="subscribe_topic"                                    default="/camera/depth_registered/points"/>
   <arg name="subscribe_buffer_size"                              default="1"/>
   <arg name="sensor_frame_has_z_axis_forward"                    default="true"/>
   <arg name="ema_alpha"                                          default="1.0"/>
   <arg name="map_frame"                                          default="map"/>
-  <arg name="fixed_frame"                                        default="odom"/>
+  <arg name="fixed_frame"                                        default="camera_link"/>
   <arg name="base_frame"                                         default="base_link"/>
   <arg name="nr_scans_in_bank"                                   default="0"/>
   <arg name="optimize_nr_scans_in_bank"                          default="0.5"/>
