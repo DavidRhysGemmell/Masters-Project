@@ -139,7 +139,7 @@
     </node>
     
     <!-- Run pointcloud2 interpreter for camera -->
-<!--     <include file="$(find find_moving_objects)/launch/includes/pointcloud2_interpreter_node.launch.xml"> -->
+    <!-- <include file="$(find find_moving_objects)/launch/includes/pointcloud2_interpreter_node.launch.xml">
     <include file="$(find find_moving_objects)/launch/includes/pointcloud2_interpreter_nodelet.launch.xml">
       <arg name="manager" value="camera" />
       <arg if="$(arg use_bag)"
@@ -154,7 +154,7 @@
       <arg name="publish_ema" value="false"/>
       <arg name="publish_objects_closest_points_markers" value="false"/>
       <arg name="subscribe_buffer_size" value="10" />
-    </include>
+    </include> -->
 </group>
   
   <!-- Run confidence enhancing node -->
