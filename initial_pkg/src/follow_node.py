@@ -13,28 +13,48 @@ class Follow_node:
 
         self.moving_object_sub = rospy.Subscriber('/moving_objects', MovingObject, self.moving_object)
         self.rgbd_odom_sub = rospy.Subscriber('/rtabmap/odom', Odometry, self.euler_from_quarternion)
-        
+        rospy.loginfo("Follower node active")
+
+
+
     def euler_from_quarternion(self, odom_msg):
-         linear=odom_msg.pose.pose.position
-         quaternion_orientation = odom_msg.pose.pose.orientation
-        (roll, pitch, yaw) = euler_from_quaternion([quaternion_orientation.x, quaternion_orientation.y, quaternion_orientation.z, quaternion_orientation.w])
+        (roll, pitch, yaw) = euler_from_quaternion([odom_msg.pose.pose.orientation.x, odom_msg.pose.pose.orientation.y, odom_msg.pose.pose.orientation.z, odom_msg.pose.pose.orientation.w])
+        self.robot_position = (odom_msg.pose.pose.position.x, odom_msg.pose.pose.position.y, yaw)
     
-        if yaw < 0:
-            real_yaw = (yaw*(180/math.pi))+360
-        else:
-            real_yaw = yaw*(180/math.pi) #angle of robot relative to world frame     
-        print(f"x is {linear.x:.2f}, y is {linear.y:.2f}, z is {linear.z:.2f}, Yaw is {real_yaw:.2f}")
     
+
     def moving_object(self,moving_object_data):
         self.object_position = moving_object_data.position
         self.object_velocity = moving_object_data.velocity
         self.distance_to_object = moving_object_data.closest_distance
         self.angle_to_object = moving_object_data.angle_for_closest_distance
+        self.object_detected_time = rospy.get_rostime()
 
-    def object_acceleration(self):
 
-    def predicted_movement(self):
-        predicted_path=self.object_position + self.object_velocity * time
+
+    def object_acceleration(self): #future work
+
+
+
+
+    def object_lost(self):
+        if self.time_since_object_detected > 10:
+            search_object=true
+
+
+      
+    def predicted_movement(self): #take 1 second
+        self.time_since_object_detected = rospy.get_rostime() - self.object_detected_time
+        self.predicted_position=self.object_position + self.object_velocity * time_since_object_detected          
+
+
+
+
+
+    def goal(self):
+        self.goal= self.object_position + self.object_velocity #1 second ahead
+
+
 
 
 
