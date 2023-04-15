@@ -1,5 +1,4 @@
-#! /usr/bin/python
-
+#! /usr/bin/env python3
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
@@ -9,8 +8,8 @@ class Drive_at_block:
 
     def __init__(self):
         self.closest_object_angle=0       
-        self.pub = rospy.Publisher('/robot2/cmd_vel', Twist, queue_size=1)
-        self.sub = rospy.Subscriber('/robot2/scan', LaserScan, self.callback_laser)
+        self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+        self.sub = rospy.Subscriber('/scan', LaserScan, self.callback_laser)
         self.vel = Twist()
 
     def callback_laser(self, LaserMsg):

@@ -1,3 +1,4 @@
+
 #! /usr/bin/python
 import rospy
 from geometry_msgs.msg import Twist
@@ -17,10 +18,30 @@ class Follow_node:
 
 
 
+
+
+    def shutdown(self): # on shutdown stop
+        self.vel.angular.z=0
+        self.vel.linear.x=0
+        self.pub.publish(self.vel)
+        # plt.imshow(self.grid) #uncomment to show map when ctrl_c
+        # plt.show()            #uncomment to show map when ctrl_c
+        self.vel.angular.z=0
+        self.vel.linear.x=0
+        self.pub.publish(self.vel)
+        print("shutting down")
+        sys.exit()
+
+
+
     def euler_from_quarternion(self, odom_msg):
         (roll, pitch, yaw) = euler_from_quaternion([odom_msg.pose.pose.orientation.x, odom_msg.pose.pose.orientation.y, odom_msg.pose.pose.orientation.z, odom_msg.pose.pose.orientation.w])
-        self.robot_position = (odom_msg.pose.pose.position.x, odom_msg.pose.pose.position.y, yaw)
-    
+        if yaw < 0: #from -pi -> pi to 0 -> 2pi
+            real_yaw = yaw + 2*pi
+
+
+        self.robot_position = (odom_msg.pose.pose.position.x, odom_msg.pose.pose.position.y, real_yaw)
+        
     
 
     def moving_object(self,moving_object_data):
@@ -43,7 +64,7 @@ class Follow_node:
 
 
       
-    def predicted_movement(self): #take 1 second
+    def predicted_movement(self): 
         self.time_since_object_detected = rospy.get_rostime() - self.object_detected_time
         self.predicted_position=self.object_position + self.object_velocity * time_since_object_detected          
 
@@ -53,6 +74,26 @@ class Follow_node:
 
     def goal(self):
         self.goal= self.object_position + self.object_velocity #1 second ahead
+        angle_to_goal = arctan2((self.robot_position.x - self.goal.x)/(self.robot_position.y))
+        angle_to_turn = angle_to_goal - self.robot_position.real_yaw
+        distance_to_goal = sqrt(pow((self.object_position.x-self.robot_position.x),2)+pow((self.object_position.y-self.robot_position.y),2))
+        if angle_to_turn<-0.01: #just over 5 degrees left
+            self.vel.angular.z = 0.5 
+            print("turning left")
+        elif angle_to_turn>0.01: #just over 5 degrees right
+            self.vel.angular.z = -0.5
+            print("turning right")
+        else:
+            print("On target")
+
+        if distance_to_goal>0.02:
+            self.vel.linear.x = 0.5
+        else:
+            self.vel.linear.x = 0.0
+            print ("goal")
+
+
+
 
 
 
