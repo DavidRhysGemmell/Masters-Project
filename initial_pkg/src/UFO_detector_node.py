@@ -50,7 +50,7 @@ class UFO_detector:
                     self.distance_pub.publish(self.distance)
                     #print(width_in_scans)
                     self.angle_pub.publish(self.object_middle) #real angle in deg, /scan message is filled anti-clockwise. consusing eh.
-                    self.velocity()
+                    # self.velocity()
         #print('UFO?',UFO_detected)
         self.detector_pub.publish(UFO_detected)
     def velocity(self):

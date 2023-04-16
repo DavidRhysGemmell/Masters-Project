@@ -1,0 +1,4 @@
+<launch>
+    <node name="UFO_detector_node" pkg="initial_pkg" type="UFO_detector_node.py" output="screen" />    
+    <node name="Attack_node" pkg="initial_pkg" type="attack_object.py" output="screen" />   
+</launch>    
