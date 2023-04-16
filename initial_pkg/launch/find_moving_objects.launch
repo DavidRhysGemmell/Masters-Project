@@ -110,12 +110,12 @@
   
   <!--  Camera  -->
     <!-- Run Intel Realsense D435 -->
-    <include unless="$(arg use_bag)" file="$(find freenect_launch)/launch/freenect.launch"> <!--commented out, launching camera seperate -->
-          <arg name="depth_registration" value="true"/>
+    <!-- <include unless="$(arg use_bag)" file="$(find freenect_launch)/launch/freenect.launch"> commented out, launching camera seperate -->
+          <!-- <arg name="depth_registration" value="true"/> -->
       <!-- <arg name="enable_pointcloud" value="true"/>
       <arg name="align_depth" value="true"/>
       <arg name="enable_sync" value="true"/> -->
-    </include>
+    <!-- </include> -->
     
   <!--  Attach to camera's namespace  -->
   <group if="$(arg use_camera)"  ns="camera">
