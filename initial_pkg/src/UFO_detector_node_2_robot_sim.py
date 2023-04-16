@@ -20,7 +20,7 @@ class UFO_detector:
                     j=i
                     if j==719:
                         j=0
-                    print('object began at', object_begin)
+                    #print('object began at', object_begin)
                     while laser_scan_array[j]-laser_scan_array[j+1] >=-0.5:
                         width_in_scans=width_in_scans+1
                         j=j+1
@@ -28,7 +28,7 @@ class UFO_detector:
                             j=0
                     
                     object_end = j
-                    print('object_end', object_end)
+                    #print('object_end', object_end)
                     object_width= width_in_scans
                     object_middle_scan=object_begin+object_width/2
                     if object_middle_scan>720:
@@ -38,11 +38,11 @@ class UFO_detector:
                         object_middle = object_middle-360
 
                     
-                    print('object_middle',object_middle_scan)
+                    #print('object_middle',object_middle_scan)
                     distance=laser_scan_array[int(object_middle_scan)]
-                    print(distance)
+                    #print(distance)
                     self.distance_pub.publish(distance)
-                    print(width_in_scans)
+                    #print(width_in_scans)
                     self.angle_pub.publish(object_middle) #real angle in deg, /scan message is filled anti-clockwise. consusing eh.
 
 

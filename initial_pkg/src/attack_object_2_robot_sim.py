@@ -26,14 +26,17 @@ class Attack_node:
         self.attack()
     def attack(self):
         if abs(self.ufo_angle)>1:
-            self.angle_vel= -2*self.ufo_angle/180
+            self.angle_vel= -3*self.ufo_angle/180
             self.vel.angular.z=self.angle_vel
-            print(self.angle_vel)
+            #print(self.angle_vel)
             # if angle_vel>0:
                 #print("turning left")
             # elif angle_vel<0:
                 #print("turning right")
-        self.linear_vel = (1-abs(self.angle_vel)/2)/1.2    
+        if abs(self.ufo_angle>=90):
+            self.linear_vel=0
+        else:
+            self.linear_vel = (1-abs(self.angle_vel)/3)/2   
 
         self.vel.linear.x=self.linear_vel
         self.pub.publish(self.vel)

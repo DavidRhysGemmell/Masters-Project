@@ -1,0 +1,5 @@
+<launch>
+    <include file="$(find initial_pkg)/launch/two_robots.launch"> </include>
+    <node name="UFO_detector_node" pkg="initial_pkg" type="UFO_detector_node_2_robot_sim.py" output="screen" />    
+    <node name="Attack_node" pkg="initial_pkg" type="attack_object_2_robot_sim.py" output="screen" />   
+</launch>    
