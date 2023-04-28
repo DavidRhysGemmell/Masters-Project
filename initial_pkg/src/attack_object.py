@@ -16,11 +16,12 @@ class Attack_node:
         rospy.on_shutdown(self.shutdown) 
         self.angle_vel=0
         self.linear_vel=0
-
+        self.linear_scale_factor = 1
+        self.angular_scale_factor = 1
     def detected_sub(self, detected):
         self.ufo_detected = detected.data
         if self.ufo_detected == False:
-            print("No objects detected")
+            rospy.loginfo("No objects detected")
             self.vel.linear.x=0
             self.vel.angular.z=0
             self.pub.publish(self.vel) #no objects = stop

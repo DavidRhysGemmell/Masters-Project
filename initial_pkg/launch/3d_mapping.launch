@@ -89,7 +89,7 @@
   <arg name="rgbd_depth_scale"        default="$(arg depth_scale)" />
   <arg name="rgbd_decimation"         default="1" />
 
-  <arg name="compressed"              default="true"/>         <!-- If you want to subscribe to compressed image topics -->
+  <arg name="compressed"              default="false"/>         <!-- If you want to subscribe to compressed image topics -->
   <arg name="rgb_image_transport"     default="compressed"/>    <!-- Common types: compressed, theora (see "rosrun image_transport list_transports") -->
   <arg name="depth_image_transport"   default="compressedDepth"/>  <!-- Depth compatible types: compressedDepth (see "rosrun image_transport list_transports") -->
 

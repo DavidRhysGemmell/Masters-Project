@@ -21,12 +21,12 @@ class UFO_detector:
         UFO_detected = False
         for i in range(719): #not accounting for 720->0 yet
                 
-                if laser_scan_array[i]-laser_scan_array[i+1] > 0.5: #object begin
+                if laser_scan_array[i]-laser_scan_array[i+1] > 0.1 and laser_scan_array[i]!= float('inf') and laser_scan_array[i+1]!=float('inf'): #object begin
                     object_begin=i
                     j=i
                     if j==719:
                         j=0
-                    #print('object began at', object_begin)
+                    print('object began at', object_begin)
                     while laser_scan_array[j]-laser_scan_array[j+1] >=-0.5: #until object end
                         width_in_scans=width_in_scans+1
                         j=j+1
