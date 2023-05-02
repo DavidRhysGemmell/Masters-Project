@@ -139,7 +139,7 @@
     </node>
     
     <!-- Run pointcloud2 interpreter for camera -->
-    <!-- <include file="$(find find_moving_objects)/launch/includes/pointcloud2_interpreter_node.launch.xml">
+    <!-- <include file="$(find initial_pkg)/launch/find_moving_objects_pointcloud2_interpreter_node.launch">
     <include file="$(find find_moving_objects)/launch/includes/pointcloud2_interpreter_nodelet.launch.xml">
       <arg name="manager" value="camera" />
       <arg if="$(arg use_bag)"

@@ -14,21 +14,30 @@ class UFO_detector:
         self.bank_size = 40 #how many messages to determine relative object velocity, put hz of /scan
         self.distance_bank = []
         self.angle_bank = []
+        self.object_detection_sensitivity=0.5
 
     def detector(self, LaserMsg):
         laser_scan_array=LaserMsg.ranges
         width_in_scans=0
         UFO_detected = False
         for i in range(719): #not accounting for 720->0 yet
-                
-                if laser_scan_array[i]-laser_scan_array[i+1] > 0.1 and laser_scan_array[i]!= float('inf') and laser_scan_array[i+1]!=float('inf'): #object begin
+                k=i+1
+                while laser_scan_array[k] == float('inf'):
+                    k=k+1
+                    if k== 720:
+                        k=0
+                if laser_scan_array[i]-laser_scan_array[k] > self.object_detection_sensitivity: #and laser_scan_array[i]!= float('inf') and laser_scan_array[i+1]!=float('inf'): #object begin
                     object_begin=i
                     j=i
                     if j==719:
                         j=0
                     print('object began at', object_begin)
-                    while laser_scan_array[j]-laser_scan_array[j+1] >=-0.5: #until object end
+                    stop_stuck_in_while = 0
+                    
+                    while laser_scan_array[j]-laser_scan_array[j+1] >=-self.object_detection_sensitivity and stop_stuck_in_while<=719: #until object end
+                        
                         width_in_scans=width_in_scans+1
+                        stop_stuck_in_while=stop_stuck_in_while+1
                         j=j+1
                         if j==719:
                             j=0
@@ -43,7 +52,7 @@ class UFO_detector:
                     if self.object_middle >180:
                         self.object_middle = self.object_middle-360
 
-                    rospy.loginfo("Object detected")
+                    rospy.loginfo("UFO detected")
                     #print('object_middle',object_middle_scan)
                     self.distance=laser_scan_array[int(object_middle_scan)]
                     #print(distance)
@@ -51,7 +60,11 @@ class UFO_detector:
                     #print(width_in_scans)
                     self.angle_pub.publish(self.object_middle) #real angle in deg, /scan message is filled anti-clockwise. consusing eh.
                     # self.velocity()
+                if UFO_detected==True:
+                    break        
         #print('UFO?',UFO_detected)
+        if UFO_detected==False:
+            rospy.loginfo("No UFOs detected")
         self.detector_pub.publish(UFO_detected)
     def velocity(self):
         for i in range (1,self.bank_size):

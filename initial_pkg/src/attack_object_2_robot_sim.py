@@ -16,12 +16,12 @@ class Attack_node:
         rospy.on_shutdown(self.shutdown) 
         self.angle_vel=0
         self.linear_vel=0
-        self.linear_scale_factor = 1
+        self.linear_scale_factor = 1.5
         self.angular_scale_factor = 1
     def detected_sub(self, detected):
         self.ufo_detected = detected.data
         if self.ufo_detected == False:
-            rospy.loginfo("No objects detected")
+            # rospy.loginfo("No objects detected")
             self.vel.linear.x=0
             self.vel.angular.z=0
             self.pub.publish(self.vel) #no objects = stop
@@ -37,7 +37,7 @@ class Attack_node:
     def attack(self):
         if abs(self.ufo_angle)>1:
             self.angle_vel= -3*self.ufo_angle/180
-            self.vel.angular.z=self.angle_vel
+            self.vel.angular.z=self.angle_vel * self.angular_scale_factor
             #print(self.angle_vel)
             # if angle_vel>0:
                 #print("turning left")
@@ -48,7 +48,7 @@ class Attack_node:
         else:
             self.linear_vel = (1-abs(self.angle_vel)/3)/2   
 
-        self.vel.linear.x=self.linear_vel
+        self.vel.linear.x=self.linear_vel * self.linear_scale_factor
         self.pub.publish(self.vel)
 
             
