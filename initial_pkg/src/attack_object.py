@@ -17,7 +17,7 @@ class Attack_node:
         self.angle_vel=0
         self.linear_vel=0
         self.linear_scale_factor = 0.5
-        self.angular_scale_factor = 1
+        self.angular_scale_factor = 3
     def detected_sub(self, detected):
         self.ufo_detected = detected.data
         if self.ufo_detected == False:
@@ -35,8 +35,9 @@ class Attack_node:
 
 
     def attack(self):
+
         if abs(self.ufo_angle)>1:
-            self.angle_vel= -3*self.ufo_angle/180
+            self.angle_vel= self.ufo_angle/180
             self.vel.angular.z=self.angle_vel* self.angular_scale_factor
             #print(self.angle_vel)
             # if angle_vel>0:
@@ -47,7 +48,7 @@ class Attack_node:
             self.linear_vel=0
         else:
             self.linear_vel = (45-abs(self.ufo_angle))/45
-        
+        print(self.linear_vel)
         self.vel.linear.x=self.linear_vel* self.linear_scale_factor
         self.pub.publish(self.vel)
 
