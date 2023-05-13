@@ -9,6 +9,7 @@ Panels:
         - /PoseWithCovariance1
         - /Map1
         - /PoseArray1
+        - /LaserScan1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz/Selection
@@ -58,7 +59,7 @@ Visualization Manager:
       Axes Length: 1
       Axes Radius: 0.10000000149011612
       Class: rviz/PoseWithCovariance
-      Color: 255; 25; 0
+      Color: 32; 74; 135
       Covariance:
         Orientation:
           Alpha: 0.5
@@ -128,6 +129,34 @@ Visualization Manager:
       Topic: /particlecloud
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/LaserScan
+      Color: 255; 255; 255
+      Color Transformer: ""
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: LaserScan
+      Position Transformer: ""
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /scan
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -156,7 +185,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 50.037784576416016
+      Distance: 23.237751007080078
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -164,9 +193,9 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: -7.750417232513428
-        Y: 3.7812745571136475
-        Z: 2.806612253189087
+        X: -2.998067617416382
+        Y: 3.4778683185577393
+        Z: -0.33926716446876526
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false

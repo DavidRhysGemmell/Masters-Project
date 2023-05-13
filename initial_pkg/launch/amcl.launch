@@ -1,0 +1,4 @@
+<launch>
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find initial_pkg)/rviz/amcl.rviz" required="true" output="screen"/> 
+    <node name="amcl" pkg="amcl" type="amcl" output="screen" />     
+</launch> 

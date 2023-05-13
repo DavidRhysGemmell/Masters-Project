@@ -1,10 +1,11 @@
 <launch>
-  <arg name="subscribe_topic"                                    default="/camera/depth_registered/points"/>
+<!-- Taken from find_moving_objects/launch/includes/pointcloud2_interpreter_node.launch.xml and edited for purpose -->
+  <arg name="subscribe_topic"                                    default="/camera/depth/points"/>
   <arg name="subscribe_buffer_size"                              default="1"/>
   <arg name="sensor_frame_has_z_axis_forward"                    default="true"/>
   <arg name="ema_alpha"                                          default="1.0"/>
   <arg name="map_frame"                                          default="map"/>
-  <arg name="fixed_frame"                                        default="odom"/>
+  <arg name="fixed_frame"                                        default="base_link"/>
   <arg name="base_frame"                                         default="base_link"/>
   <arg name="nr_scans_in_bank"                                   default="0"/>
   <arg name="optimize_nr_scans_in_bank"                          default="0.5"/>

@@ -1,5 +1,5 @@
 <launch>
-  <arg name="subscribe_topic"                                    default="/camera/depth_registered/points"/>
+  <arg name="subscribe_topic"                                    default="pointcloudArray"/>
   <arg name="subscribe_buffer_size"                              default="1"/>
   <arg name="sensor_frame_has_z_axis_forward"                    default="true"/>
   <arg name="ema_alpha"                                          default="1.0"/>

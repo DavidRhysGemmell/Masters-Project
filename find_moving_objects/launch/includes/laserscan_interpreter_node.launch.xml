@@ -1,5 +1,5 @@
 <launch>
-  <arg name="subscribe_topic"                                    default="laserscan"/>
+  <arg name="subscribe_topic"                                    default="/scan"/>
   <arg name="subscribe_buffer_size"                              default="1"/>
   <arg name="ema_alpha"                                          default="1.0"/>
   <arg name="map_frame"                                          default="map"/>

@@ -1,4 +1,5 @@
 <launch>
-    <node name="UFO_detector_node" pkg="initial_pkg" type="UFO_detector_node.py" output="screen" />    
+    <node name="UFO_detector_node" pkg="initial_pkg" type="UFO_detector_node.py" output="screen" />   
     <node name="Attack_node" pkg="initial_pkg" type="attack_object.py" output="screen" />   
-</launch>    
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find initial_pkg)/rviz/simple.rviz" required="true" output="screen"/>  
+</launch> 
